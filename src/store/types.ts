@@ -1,19 +1,26 @@
 export interface TAnswer {
   id: string;
   name: string;
-  isTrue: '0' | '1';
+  istrue: boolean;
   question_id: string;
+}
+
+export interface TUserAnswer {
+  question: TQuestion['id'];
+  answer: TAnswer;
 }
 export interface TQuestion {
   answers: TAnswer[];
-  id: string;
+  id: number;
   name: string;
+  url: string;
 }
 export interface IState {
   isbad_text: string;
   isok_text: string;
   questions: TQuestion[] | null;
   questionsCount: number;
+  answers: TUserAnswer[];
   readonly errors?: string | undefined;
   readonly loading: boolean;
 }
@@ -31,6 +38,8 @@ export enum EActionTypes {
   SET_QUESTIONS_COUNT = 'SET_QUESTIONS',
 
   SET_LOADING = 'SET_LOADING',
+
+  SET_ANSWER = 'SET_ANSWER',
 
   OPEN_MODAL = 'OPEN_MODAL',
   CLOSE_MODAL = 'CLOSE_MODAL',

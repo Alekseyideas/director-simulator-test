@@ -13,6 +13,11 @@ export default function reducer(state: IState, action: IAction): IState {
         ...action.payload,
         loading: false,
       };
+    case EActionTypes.SET_ANSWER:
+      return {
+        ...state,
+        answers: [...state.answers, action.payload.answer],
+      };
 
     default:
       return state;

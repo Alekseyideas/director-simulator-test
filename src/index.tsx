@@ -6,11 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import { StoreProvider } from './store';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <StoreProvider>
+  // <React.StrictMode>
+  <StoreProvider>
+    <div className='tda'>
       <App />
-    </StoreProvider>
-  </React.StrictMode>,
+    </div>
+  </StoreProvider>,
   document.getElementById('root')
 );
 
