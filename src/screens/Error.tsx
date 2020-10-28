@@ -1,6 +1,6 @@
 import React from 'react';
-import { IcoError } from '../svgs';
-import { Button } from '../ui';
+import { IcoError } from '../components/svgs';
+import { Button } from '../components/ui';
 
 interface ErrorProps {
   onClickNext: () => void;

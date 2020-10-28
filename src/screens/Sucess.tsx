@@ -1,6 +1,6 @@
 import React from 'react';
-import { IconCheck } from '../svgs';
-import { Button } from '../ui';
+import { IconCheck } from '../components/svgs';
+import { Button } from '../components/ui';
 
 interface SuccessProps {
   onClickNext: () => void;

@@ -2,12 +2,16 @@ import Axios from 'axios';
 import React from 'react';
 import './App.scss';
 import { Circle } from './components/Circle';
-import { CompleteFail, CompleteSuccess, ErrorScreen, SuccessScreen } from './components/screens';
+import { MessWrapper } from './components/MessWrapper';
+import { CompleteFail, CompleteSuccess, ErrorScreen, SelectCount, SuccessScreen } from './screens';
 import { Store } from './store';
 import StoreAction from './store/StoreAction';
 import { TUserAnswer } from './store/types';
 function App() {
   const { store, dispatch } = React.useContext(Store);
+
+  const [isStepCount, setIsStepCount] = React.useState(true);
+  const [questionCount, setQuestionCount] = React.useState(3);
 
   const [loading, setLoading] = React.useState(true);
   const [showSuccessScreen, setShowSuccessScreen] = React.useState(false);
@@ -25,7 +29,7 @@ function App() {
         try {
           const resp = await Axios.get(`${process.env.REACT_APP_API_URI}/exec/test_train.php`);
           new StoreAction(dispatch).setQuestions({
-            questions: resp?.data?.questions || [],
+            questions: resp?.data?.questions.sort(() => Math.random() - 0.5) || [],
             isbad_text: resp?.data?.isbad_text || '',
             isok_text: resp?.data?.isok_text || '',
             questionsCount: (resp?.data?.questions[0] && resp?.data?.questions.length) || 1,
@@ -50,16 +54,39 @@ function App() {
     new StoreAction(dispatch).setAnswer({ answer: data });
   };
 
+  const checkQuestions = () => {
+    const suc = store.answers.filter((itm) => itm.answer.istrue);
+    const sucCount = suc.length;
+    if (questionCount === 3 && sucCount < 2) return setIsComFail(true);
+    if (questionCount === 15 && sucCount < 7) return setIsComFail(true);
+    if (questionCount === 30 && sucCount < 21) return setIsComFail(true);
+    if (questionCount === 40 && sucCount < 28) return setIsComFail(true);
+    if (questionCount === 50 && sucCount < 35) return setIsComFail(true);
+    if (questionCount === 200 && sucCount < 140) return setIsComFail(true);
+    return setIsComSuc(true);
+  };
   const nextQhandler = () => {
-    console.log(store.questionsCount - 1 >= currentQuestion);
-    console.log(store.questionsCount - 1, currentQuestion);
     if (store.questionsCount - 1 <= currentQuestion) {
-      console.log(1123123);
+      checkQuestions();
     } else {
       setCurrentQuestion((oldV) => oldV + 1);
     }
   };
 
+  if (loading) return <MessWrapper text='Зачекайте ...' />;
+
+  if (isStepCount) {
+    return (
+      <SelectCount
+        onSubmit={(val) => {
+          if (store.questionsCount < val) {
+            setQuestionCount(3);
+          } else setQuestionCount(val);
+          setIsStepCount(false);
+        }}
+      />
+    );
+  }
   if (isComFail) {
     return <CompleteFail />;
   }
@@ -93,18 +120,16 @@ function App() {
     );
   }
 
-  if (loading)
-    return (
-      <div style={{ padding: '20px' }}>
-        <p>Зачекайте ...</p>
-      </div>
-    );
-
   if (store.questions) {
     return (
       <div>
         <div className='tda__wrapper'>
-          <Circle num={+((currentQuestion / store.questionsCount) * 100).toFixed()} />
+          <div className='tda__circleTextWrapper'>
+            <Circle num={+((currentQuestion / store.questionsCount) * 100).toFixed()} />
+            <span>
+              {currentQuestion + 1} з {store.questionsCount}
+            </span>
+          </div>
           <div className='tda__testQWrapper'>
             <h5>{store && store.questions[currentQuestion].name}</h5>
             <ul>
@@ -128,18 +153,9 @@ function App() {
     );
   }
 
-  if (error)
-    return (
-      <div style={{ padding: '20px' }}>
-        <p>{error}</p>
-      </div>
-    );
+  if (error) return <MessWrapper text={error} />;
 
-  return (
-    <div style={{ padding: '20px' }}>
-      <p>нема питань</p>
-    </div>
-  );
+  return <MessWrapper text='нема питань' />;
 }
 
 export default App;

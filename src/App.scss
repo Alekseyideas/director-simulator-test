@@ -139,4 +139,27 @@ $blueActive: #003d72;
     display: flex;
     align-items: center;
   }
+
+  &__circleTextWrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  &__selectCountScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    select {
+      width: 300px;
+    }
+  }
+  &__select {
+    width: 300px;
+    div {
+      cursor: pointer;
+    }
+  }
 }

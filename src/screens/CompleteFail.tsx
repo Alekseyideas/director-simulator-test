@@ -1,6 +1,6 @@
 import React from 'react';
-import IconFail from '../../images/depressed.svg';
-import { Button } from '../ui';
+import IconFail from '../images/depressed.svg';
+import { Button } from '../components/ui';
 
 interface CompleteFailProps {}
 

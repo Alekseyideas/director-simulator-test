@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconTrophy } from '../svgs';
+import { IconTrophy } from '../components/svgs';
 
 interface CompleteSuccessProps {}
 
