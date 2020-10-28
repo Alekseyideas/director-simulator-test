@@ -1,5 +1,5 @@
 import React from 'react';
-import Select, { ValueType } from 'react-select';
+import Select from 'react-select';
 import { Button } from '../components/ui';
 
 const options = [

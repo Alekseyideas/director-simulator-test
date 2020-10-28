@@ -162,4 +162,21 @@ $blueActive: #003d72;
       cursor: pointer;
     }
   }
+
+  &__questionErrorScreen {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px;
+
+    h4 {
+      margin: 0;
+      font-size: 19px;
+    }
+  }
+
+  &__error-list {
+    color: red;
+  }
 }

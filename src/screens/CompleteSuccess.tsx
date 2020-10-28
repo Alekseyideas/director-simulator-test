@@ -3,7 +3,7 @@ import { IconTrophy } from '../components/svgs';
 
 interface CompleteSuccessProps {}
 
-export const CompleteSuccess: React.FC<CompleteSuccessProps> = ({}) => {
+export const CompleteSuccess: React.FC<CompleteSuccessProps> = () => {
   return (
     <div className='tda__successScreen'>
       <IconTrophy />

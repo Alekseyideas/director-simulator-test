@@ -3,14 +3,24 @@ import React from 'react';
 import './App.scss';
 import { Circle } from './components/Circle';
 import { MessWrapper } from './components/MessWrapper';
-import { CompleteFail, CompleteSuccess, ErrorScreen, SelectCount, SuccessScreen } from './screens';
+import {
+  CompleteFail,
+  CompleteSuccess,
+  ErrorScreen,
+  QuestionErrors,
+  SelectCount,
+  SuccessScreen,
+} from './screens';
 import { Store } from './store';
 import StoreAction from './store/StoreAction';
 import { TUserAnswer } from './store/types';
 function App() {
   const { store, dispatch } = React.useContext(Store);
 
+  const [maxErrorsCount, setMaxErrorsCount] = React.useState(3);
   const [isStepCount, setIsStepCount] = React.useState(true);
+  const [isErrorScreen, setIsErrorScreen] = React.useState(false);
+
   const [questionCount, setQuestionCount] = React.useState(3);
 
   const [loading, setLoading] = React.useState(true);
@@ -24,7 +34,6 @@ function App() {
 
   React.useEffect(() => {
     if (!store.questions) {
-      // const Actions = new StoreAction(dispatch);
       (async () => {
         try {
           const resp = await Axios.get(`${process.env.REACT_APP_API_URI}/exec/test_train.php`);
@@ -57,12 +66,31 @@ function App() {
   const checkQuestions = () => {
     const suc = store.answers.filter((itm) => itm.answer.istrue);
     const sucCount = suc.length;
-    if (questionCount === 3 && sucCount < 2) return setIsComFail(true);
-    if (questionCount === 15 && sucCount < 7) return setIsComFail(true);
-    if (questionCount === 30 && sucCount < 21) return setIsComFail(true);
-    if (questionCount === 40 && sucCount < 28) return setIsComFail(true);
-    if (questionCount === 50 && sucCount < 35) return setIsComFail(true);
-    if (questionCount === 200 && sucCount < 140) return setIsComFail(true);
+    if (questionCount === 3 && sucCount < 3) {
+      setMaxErrorsCount(1);
+      return setIsComFail(true);
+    }
+    if (questionCount === 15 && sucCount < 7) {
+      setMaxErrorsCount(15 - 7);
+      return setIsComFail(true);
+    }
+    if (questionCount === 30 && sucCount < 21) {
+      setMaxErrorsCount(30 - 21);
+      return setIsComFail(true);
+    }
+    if (questionCount === 40 && sucCount < 28) {
+      setMaxErrorsCount(40 - 28);
+      return setIsComFail(true);
+    }
+    if (questionCount === 50 && sucCount < 35) {
+      setMaxErrorsCount(50 - 35);
+      return setIsComFail(true);
+    }
+    if (questionCount === 200 && sucCount < 140) {
+      setMaxErrorsCount(200 - 140);
+
+      return setIsComFail(true);
+    }
     return setIsComSuc(true);
   };
   const nextQhandler = () => {
@@ -74,6 +102,10 @@ function App() {
   };
 
   if (loading) return <MessWrapper text='Зачекайте ...' />;
+
+  if (isErrorScreen) {
+    return <QuestionErrors />;
+  }
 
   if (isStepCount) {
     return (
@@ -88,7 +120,9 @@ function App() {
     );
   }
   if (isComFail) {
-    return <CompleteFail />;
+    return (
+      <CompleteFail maxErrorsCount={maxErrorsCount} goToErrors={() => setIsErrorScreen(true)} />
+    );
   }
 
   if (isComSuc) {
