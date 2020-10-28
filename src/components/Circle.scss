@@ -6,10 +6,10 @@ $back-color: #dddddd;
   background-color: $back-color;
   border-radius: 50%;
   display: inline-block;
-  height: 15rem;
+  min-height: 10rem;
   // margin: 4rem 2rem 0;
   position: relative;
-  width: 15rem;
+  min-width: 10rem;
 }
 
 .progress-circle:before {

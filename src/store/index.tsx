@@ -5,6 +5,7 @@ import reducer from './reducer';
 const initialState: IState = {
   isbad_text: '',
   isok_text: '',
+  answers: [],
   questions: null,
   questionsCount: 0,
   loading: true,

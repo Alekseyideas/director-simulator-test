@@ -8,7 +8,9 @@ import { StoreProvider } from './store';
 ReactDOM.render(
   <React.StrictMode>
     <StoreProvider>
-      <App />
+      <div className='tda'>
+        <App />
+      </div>
     </StoreProvider>
   </React.StrictMode>,
   document.getElementById('root')

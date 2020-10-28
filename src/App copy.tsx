@@ -2,7 +2,7 @@ import Axios from 'axios';
 import React from 'react';
 import './App.scss';
 import { Circle } from './components/Circle';
-import { CompleteFail, CompleteSuccess, ErrorScreen, SuccessScreen } from './components/screens';
+import { CompleteSuccess, ErrorScreen, SuccessScreen } from './components/screens';
 import { Store } from './store';
 import StoreAction from './store/StoreAction';
 import { TUserAnswer } from './store/types';
@@ -13,7 +13,7 @@ function App() {
   const [showSuccessScreen, setShowSuccessScreen] = React.useState(false);
   const [showErrorScreen, setShowErrorScreen] = React.useState(false);
   const [isComSuc, setIsComSuc] = React.useState(false);
-  const [isComFail, setIsComFail] = React.useState(false);
+  const [isComFail, setIsComFail] = React.useState(true);
 
   const [error, setError] = React.useState<string | null>(null);
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
@@ -60,10 +60,6 @@ function App() {
     }
   };
 
-  if (isComFail) {
-    return <CompleteFail />;
-  }
-
   if (isComSuc) {
     return <CompleteSuccess />;
   }
@@ -100,7 +96,7 @@ function App() {
       </div>
     );
 
-  if (store.questions) {
+  if (store.questions)
     return (
       <div>
         <div className='tda__wrapper'>
@@ -126,7 +122,6 @@ function App() {
         </div>
       </div>
     );
-  }
 
   if (error)
     return (

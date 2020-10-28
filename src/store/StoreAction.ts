@@ -1,4 +1,4 @@
-import { IAction, TQuestion, EActionTypes, IState } from './types';
+import { IAction, TQuestion, EActionTypes, IState, TUserAnswer } from './types';
 
 export default class StoreAction {
   dispatch: IAction | any;
@@ -25,6 +25,11 @@ export default class StoreAction {
   setQuestionsCount = (payload: { count: number }) =>
     this.dispatch({
       type: EActionTypes.SET_QUESTIONS,
+      payload,
+    });
+  setAnswer = (payload: { answer: TUserAnswer }) =>
+    this.dispatch({
+      type: EActionTypes.SET_ANSWER,
       payload,
     });
 }
