@@ -6,17 +6,27 @@ $back-color: #dddddd;
   background-color: $back-color;
   border-radius: 50%;
   display: inline-block;
-  min-height: 10rem;
+  height: 15rem;
   // margin: 4rem 2rem 0;
   position: relative;
-  min-width: 10rem;
+  width: 15rem;
+
+  span {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    transform: translateY(-50%);
+    font-size: 7rem;
+  }
 }
 
 .progress-circle:before {
   align-items: center;
   background-color: #fff;
   border-radius: 50%;
-  content: attr(data-progress) '%';
+  content: '';
   display: flex;
   font-size: 3rem;
   justify-content: center;
