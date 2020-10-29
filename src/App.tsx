@@ -3,6 +3,7 @@ import React from 'react';
 import './App.scss';
 import { Circle } from './components/Circle';
 import { MessWrapper } from './components/MessWrapper';
+import { Button } from './components/ui';
 import {
   CompleteFail,
   CompleteSuccess,
@@ -18,7 +19,7 @@ function App() {
   const { store, dispatch } = React.useContext(Store);
 
   const [maxErrorsCount, setMaxErrorsCount] = React.useState(3);
-  const [isStepCount, setIsStepCount] = React.useState(true);
+  const [isStepCount, setIsStepCount] = React.useState(false);
   const [isErrorScreen, setIsErrorScreen] = React.useState(false);
 
   const [questionCount, setQuestionCount] = React.useState(3);
@@ -31,6 +32,7 @@ function App() {
 
   const [error, setError] = React.useState<string | null>(null);
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
+  const [currentAnswer, setCurrentAnswer] = React.useState<null | number>(null);
 
   React.useEffect(() => {
     if (!store.questions) {
@@ -93,6 +95,7 @@ function App() {
     }
     return setIsComSuc(true);
   };
+
   const nextQhandler = () => {
     if (store.questionsCount - 1 <= currentQuestion) {
       checkQuestions();
@@ -137,6 +140,7 @@ function App() {
         uri={uri}
         onClickNext={() => {
           nextQhandler();
+          setCurrentAnswer(null);
           setShowErrorScreen(false);
         }}
       />
@@ -148,6 +152,7 @@ function App() {
       <SuccessScreen
         onClickNext={() => {
           nextQhandler();
+          setCurrentAnswer(null);
           setShowSuccessScreen(false);
         }}
       />
@@ -159,28 +164,40 @@ function App() {
       <div>
         <div className='tda__wrapper'>
           <div className='tda__circleTextWrapper'>
-            <Circle num={+((currentQuestion / store.questionsCount) * 100).toFixed()} />
-            <span>
-              {currentQuestion + 1} з {store.questionsCount}
-            </span>
+            <Circle
+              num={+((currentQuestion / store.questionsCount) * 100).toFixed()}
+              currentQuestion={currentQuestion}
+            />
+            <span>із {store.questionsCount} питань</span>
           </div>
           <div className='tda__testQWrapper'>
             <h5>{store && store.questions[currentQuestion].name}</h5>
             <ul>
               {store.questions[currentQuestion].answers.map((itm, index) => (
                 <li
+                  className={currentAnswer === index ? 'tda__active-itm' : ''}
                   key={itm.id}
-                  onClick={() =>
-                    answerHandler({
-                      question: (store.questions && store.questions[currentQuestion].id) || 0,
-                      answer: itm,
-                    })
-                  }
+                  onClick={() => setCurrentAnswer(index)}
                 >
-                  <b>{index + 1}.</b> {itm.name}
+                  {itm.name}
                 </li>
               ))}
             </ul>
+            <Button
+              disabled={currentAnswer === null}
+              onClick={() => {
+                if (store.questions && currentAnswer !== null)
+                  answerHandler({
+                    question: (store.questions && store.questions[currentQuestion].id) || 0,
+                    answer: store.questions[currentQuestion].answers[currentAnswer],
+                  });
+                else {
+                  console.log('store.questions', store.questions);
+                  console.log('currentAnswer', currentAnswer);
+                }
+              }}
+              title='Відповісти'
+            />
           </div>
         </div>
       </div>

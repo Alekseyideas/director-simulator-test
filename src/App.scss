@@ -17,6 +17,7 @@ $blueActive: #003d72;
   }
   &__testQWrapper {
     padding-left: 20px;
+
     h5 {
       font-size: 23px;
       margin: 0 0 20px;
@@ -28,13 +29,59 @@ $blueActive: #003d72;
     ul {
       margin-top: 0;
       padding: 0;
+      background: #f0f0f0;
       li {
-        font-size: 16px;
-        list-style: none;
-        margin-bottom: 10px;
+        padding: 10px 10px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: start;
+        -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        -webkit-box-align: start;
+        -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        border-bottom: 1px solid lightgrey;
         cursor: pointer;
+        font-weight: 400;
+        font-size: 16px;
+        outline: 0;
+        position: relative;
+        &:before {
+          content: '';
+          display: block;
+          min-width: 15px;
+          max-width: 15px;
+          min-height: 15px;
+          max-height: 15px;
+          background: white;
+          -webkit-border-radius: 50%;
+          border-radius: 50%;
+          border: 1px solid lightgrey;
+          margin: 1px 10px 0 0;
+        }
+
         &:hover {
           color: $blue;
+          background: lightgrey;
+        }
+
+        &.tda__active-itm {
+          &::after {
+            border-radius: 50%;
+            content: '';
+            left: 15px;
+            top: 16px;
+            position: absolute;
+            min-width: 7px;
+            max-width: 7px;
+            min-height: 7px;
+            max-height: 7px;
+            background: #3498db;
+          }
         }
       }
     }
@@ -104,6 +151,12 @@ $blueActive: #003d72;
         color: white;
       }
     }
+
+    &:disabled {
+      opacity: 0.2;
+      cursor: default;
+      pointer-events: none;
+    }
   }
   &__faildScreen,
   &__successScreen {
@@ -144,6 +197,11 @@ $blueActive: #003d72;
     display: flex;
     flex-direction: column;
     text-align: center;
+
+    & > span {
+      font-size: 1rem;
+      margin-top: 10px;
+    }
   }
   &__selectCountScreen {
     display: flex;
