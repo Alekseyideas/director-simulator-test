@@ -52,6 +52,9 @@ export const QuestionErrors: React.FC<QuestionErrorsProps> = () => {
           </div>
         );
       })}
+      <a className='tda__btn' href='./'>
+        На головну
+      </a>
     </div>
   );
 };
