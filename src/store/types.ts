@@ -18,6 +18,7 @@ export interface TQuestion {
 export interface IState {
   isbad_text: string;
   isok_text: string;
+  demo: boolean;
   questions: TQuestion[] | null;
   questionsCount: number;
   answers: TUserAnswer[];

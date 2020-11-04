@@ -27,16 +27,28 @@ export const CompleteFail: React.FC<CompleteFailProps> = ({
       ) : (
         <p>Ви зробили більше {maxErrorsCount} помилок. Почитайте книжку "Директор на всі 200"</p>
       )}
-      <div className='tda__screenBtnWrapper tda__mt-2'>
-        <Button
-          onClick={goToErrors}
-          title='Переглянути помилки'
-          classes='tda__btn--blue tda__mr-3'
-        />
-        <a href='/' className='tda__btn'>
-          Перескласти
-        </a>
-      </div>
+
+      {isDemo ? (
+        <div className='tda__screenBtnWrapper tda__mt-2'>
+          <a href='/' className='tda__btn tda__mr-3'>
+            Перескласти
+          </a>
+          <a href='https://edirshkoly.mcfr.ua/' className='tda__btn tda__btn--blue '>
+            Повний доступ
+          </a>
+        </div>
+      ) : (
+        <div className='tda__screenBtnWrapper tda__mt-2'>
+          <Button
+            onClick={goToErrors}
+            title='Переглянути помилки'
+            classes='tda__btn--blue tda__mr-3'
+          />
+          <a href='/' className='tda__btn'>
+            Перескласти
+          </a>
+        </div>
+      )}
     </div>
   );
 };

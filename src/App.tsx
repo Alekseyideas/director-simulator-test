@@ -38,15 +38,16 @@ function App() {
     if (!store.questions) {
       (async () => {
         try {
-          const token: any = document.getElementById('idToken') as HTMLInputElement;
-          if (!token || !token.value) {
-            throw Error('Токен вiдсутнiй');
-          }
+          // const token: any = document.getElementById('idToken') as HTMLInputElement;
+          // if (!token || !token.value) {
+          //   throw Error('Токен вiдсутнiй');
+          // }
           const resp = await Axios.get(`${process.env.REACT_APP_API_URI}/questions`, {
             headers: {
               // authorization: token.value,
             },
           });
+          console.log(resp, 'resp');
 
           if (resp.data.demo) {
             setIsStepCount(false);
@@ -85,8 +86,8 @@ function App() {
       setMaxErrorsCount(1);
       return setIsComFail(true);
     }
-    if (questionCount === 10 && sucCount < 6) {
-      setMaxErrorsCount(10 - 6);
+    if (questionCount === 10 && sucCount < 7) {
+      setMaxErrorsCount(10 - 7);
       return setIsComFail(true);
     }
     if (questionCount === 15 && sucCount < 7) {
@@ -143,7 +144,11 @@ function App() {
   }
   if (isComFail) {
     return (
-      <CompleteFail maxErrorsCount={maxErrorsCount} goToErrors={() => setIsErrorScreen(true)} />
+      <CompleteFail
+        maxErrorsCount={maxErrorsCount}
+        goToErrors={() => setIsErrorScreen(true)}
+        isDemo={store.demo}
+      />
     );
   }
 
@@ -184,7 +189,7 @@ function App() {
         <div className='tda__wrapper'>
           <div className='tda__circleTextWrapper'>
             <Circle
-              num={+((currentQuestion / store.questionsCount) * 100).toFixed()}
+              num={+((currentQuestion / questionCount) * 100).toFixed()}
               currentQuestion={currentQuestion}
             />
             <span>із {questionCount} питань</span>
