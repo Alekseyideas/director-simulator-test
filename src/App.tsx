@@ -19,7 +19,7 @@ function App() {
   const { store, dispatch } = React.useContext(Store);
 
   const [maxErrorsCount, setMaxErrorsCount] = React.useState(3);
-  const [isStepCount, setIsStepCount] = React.useState(false);
+  const [isStepCount, setIsStepCount] = React.useState(true);
   const [isErrorScreen, setIsErrorScreen] = React.useState(false);
 
   const [questionCount, setQuestionCount] = React.useState(3);
@@ -38,7 +38,20 @@ function App() {
     if (!store.questions) {
       (async () => {
         try {
-          const resp = await Axios.get(`${process.env.REACT_APP_API_URI}/exec/test_train.php`);
+          const token: any = document.getElementById('idToken') as HTMLInputElement;
+          if (!token || !token.value) {
+            throw Error('Токен вiдсутнiй');
+          }
+          const resp = await Axios.get(`${process.env.REACT_APP_API_URI}/questions`, {
+            headers: {
+              // authorization: token.value,
+            },
+          });
+
+          if (resp.data.demo) {
+            setIsStepCount(false);
+            setQuestionCount(resp.data?.questions?.length || 0);
+          }
           new StoreAction(dispatch).setQuestions({
             questions: resp?.data?.questions.sort(() => Math.random() - 0.5) || [],
             isbad_text: resp?.data?.isbad_text || '',
@@ -54,9 +67,9 @@ function App() {
     }
   }, [store, dispatch]);
 
-  React.useEffect(() => {
-    console.log(store);
-  }, [store]);
+  // React.useEffect(() => {
+  //   // console.log(store);
+  // }, [store]);
 
   const answerHandler = (data: TUserAnswer) => {
     const { answer } = data;
@@ -70,6 +83,10 @@ function App() {
     const sucCount = suc.length;
     if (questionCount === 3 && sucCount < 3) {
       setMaxErrorsCount(1);
+      return setIsComFail(true);
+    }
+    if (questionCount === 10 && sucCount < 6) {
+      setMaxErrorsCount(10 - 6);
       return setIsComFail(true);
     }
     if (questionCount === 15 && sucCount < 7) {
@@ -97,7 +114,7 @@ function App() {
   };
 
   const nextQhandler = () => {
-    if (store.questionsCount - 1 <= currentQuestion) {
+    if (questionCount - 1 <= currentQuestion) {
       checkQuestions();
     } else {
       setCurrentQuestion((oldV) => oldV + 1);
@@ -105,6 +122,8 @@ function App() {
   };
 
   if (loading) return <MessWrapper text='Зачекайте ...' />;
+
+  if (error) return <MessWrapper text={error} />;
 
   if (isErrorScreen) {
     return <QuestionErrors />;
@@ -115,7 +134,7 @@ function App() {
       <SelectCount
         onSubmit={(val) => {
           if (store.questionsCount < val) {
-            setQuestionCount(3);
+            setQuestionCount(val);
           } else setQuestionCount(val);
           setIsStepCount(false);
         }}
@@ -168,7 +187,7 @@ function App() {
               num={+((currentQuestion / store.questionsCount) * 100).toFixed()}
               currentQuestion={currentQuestion}
             />
-            <span>із {store.questionsCount} питань</span>
+            <span>із {questionCount} питань</span>
           </div>
           <div className='tda__testQWrapper'>
             <h5>{store && store.questions[currentQuestion].name}</h5>
@@ -203,8 +222,6 @@ function App() {
       </div>
     );
   }
-
-  if (error) return <MessWrapper text={error} />;
 
   return <MessWrapper text='нема питань' />;
 }
