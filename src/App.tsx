@@ -47,7 +47,6 @@ function App() {
               // authorization: token.value,
             },
           });
-          console.log(resp, 'resp');
 
           if (resp.data.demo) {
             setIsStepCount(false);
@@ -58,6 +57,7 @@ function App() {
             isbad_text: resp?.data?.isbad_text || '',
             isok_text: resp?.data?.isok_text || '',
             questionsCount: (resp?.data?.questions[0] && resp?.data?.questions.length) || 1,
+            demo: resp.data.demo,
           });
         } catch (error) {
           console.log('App -> error', error);
