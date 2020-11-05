@@ -16,6 +16,7 @@ export default class StoreAction {
     isbad_text: IState['isbad_text'];
     isok_text: IState['isok_text'];
     questionsCount: IState['questionsCount'];
+    demo: IState['demo'];
   }) =>
     this.dispatch({
       type: EActionTypes.SET_QUESTIONS,
