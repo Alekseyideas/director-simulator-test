@@ -192,7 +192,7 @@ function App() {
               num={+((currentQuestion / questionCount) * 100).toFixed()}
               currentQuestion={currentQuestion}
             />
-            <span>із {questionCount} питань</span>
+            <span>із {questionCount} запитань</span>
           </div>
           <div className='tda__testQWrapper'>
             <h5>{store && store.questions[currentQuestion].name}</h5>

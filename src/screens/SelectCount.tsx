@@ -3,10 +3,10 @@ import Select from 'react-select';
 import { Button } from '../components/ui';
 
 const options = [
-  { value: '30', label: '30 питань' },
-  { value: '40', label: '40 питань' },
-  { value: '50', label: '50 питань' },
-  { value: '200', label: 'усі 200 питань' },
+  { value: '30', label: '30' },
+  { value: '40', label: '40' },
+  { value: '50', label: '50' },
+  { value: '200', label: 'усі 200' },
 ];
 
 interface SelectCountProps {
