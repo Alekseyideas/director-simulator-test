@@ -25,14 +25,19 @@ export const CompleteFail: React.FC<CompleteFailProps> = ({
           крок ближче до перемоги у конкурсі.
         </p>
       ) : (
-        <p>Ви зробили більше {maxErrorsCount} помилок. Почитайте книжку "Директор на всі 200"</p>
+        <p>
+          Ви зробили більше {maxErrorsCount} помилок. Почитайте книжку{' '}
+          <a className='defLinkg' href='https://edirshkoly.mcfr.ua/book?bid=36434'>
+            "Директор на всі 200"
+          </a>
+        </p>
       )}
 
       {isDemo ? (
         <div className='tda__screenBtnWrapper tda__mt-2'>
-          <a href='/' className='tda__btn tda__mr-3'>
+          <button type='button' id='retrndemo' className='tda__btn tda__mr-3'>
             Перескласти
-          </a>
+          </button>
           <a href='https://edirshkoly.mcfr.ua/' className='tda__btn tda__btn--blue '>
             Повний доступ
           </a>
